@@ -14,7 +14,8 @@ LFLAG := -cfm
 ##### PROPERTIES #####################################
 SRC_DIR := src
 SRC := src/ori/ogapi/lists/*.java \
-       src/ori/ogapi/util/*.java
+       src/ori/ogapi/util/*.java \
+       src/ori/ogapi/report/*.java
 LIB_DIR := lib
 TARGET_DIR := target
 TARGET := ogapi-core.jar
@@ -40,7 +41,8 @@ LIB_TEST := lib/junit-4.11.jar:$(DEBUG_DIR)/class
 ##### DOC PROPERTIES ##################################
 DOC_DIR := $(RELEASE_DIR)/doc
 PACKAGES := ori.ogapi.lists \
-			ori.ogapi.util
+			ori.ogapi.util \
+			ori.ogapi.report
 WIN_TITLE := "OGAPI - core"
 DOC_TITLE := "<b>OGAPI</b> - <i>core</i>"
 DOC_TOP := "OGAPI"
