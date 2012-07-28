@@ -156,7 +156,7 @@ public abstract class Reporter {
 
 	// output parameters
 	private int _tabSize = 2;
-	private Bulleting _bulleting = Bulleting.NUMBERING;
+	private Bulleting _bulleting = Bulleting.NULL;
 
 	// tokens
 	private String _startToken = "__@";
