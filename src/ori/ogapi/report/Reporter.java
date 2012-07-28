@@ -64,16 +64,136 @@ public abstract class Reporter {
 		doReport(String.valueOf(l));
 	}
 
-	public void processToken(String t) {
-		if (t.equals(_newSection))
-			newSection();
-		else if (t.equals(_incSection))
-			incSection();
-		else if (t.equals(_decSection))
-			decSection();
-		else
-			System.out.println("Unrecognized token : "+t);
-			// TODO log
+	public void reportln(Object o) {
+		report(o);
+		newLine();
+	}
+	public void reportln(String string) {
+		report(string);
+		newLine();
+	}
+	public void reportln(char array[]) {
+		report(array);
+		newLine();
+	}
+	public void reportln(boolean b) {
+		report(b);
+		newLine();
+	}
+	public void reportln(char c) {
+		report(c);
+		newLine();
+	}
+	public void reportln(int i) {
+		report(i);
+		newLine();
+	}
+	public void reportln(float f) {
+		report(f);
+		newLine();
+	}
+	public void reportln(double d) {
+		report(d);
+		newLine();
+	}
+	public void reportln(long l) {
+		report(l);
+		newLine();
+	}
+
+	public void reportnl(Object o) {
+		newLine();
+		report(o);
+	}
+	public void reportnl(String string) {
+		newLine();
+		report(string);
+	}
+	public void reportnl(char array[]) {
+		newLine();
+		report(array);
+	}
+	public void reportnl(boolean b) {
+		newLine();
+		report(b);
+	}
+	public void reportnl(char c) {
+		newLine();
+		report(c);
+	}
+	public void reportnl(int i) {
+		newLine();
+		report(i);
+	}
+	public void reportnl(float f) {
+		newLine();
+		report(f);
+	}
+	public void reportnl(double d) {
+		newLine();
+		report(d);
+	}
+	public void reportnl(long l) {
+		newLine();
+		report(l);
+	}
+
+	public void reportline(Object o) {
+		newLine();
+		report(o);
+		newLine();
+	}
+	public void reportline(String string) {
+		newLine();
+		report(string);
+		newLine();
+	}
+	public void reportline(char array[]) {
+		newLine();
+		report(array);
+		newLine();
+	}
+	public void reportline(boolean b) {
+		newLine();
+		report(b);
+		newLine();
+	}
+	public void reportline(char c) {
+		newLine();
+		report(c);
+		newLine();
+	}
+	public void reportline(int i) {
+		newLine();
+		report(i);
+		newLine();
+	}
+	public void reportline(float f) {
+		newLine();
+		report(f);
+		newLine();
+	}
+	public void reportline(double d) {
+		newLine();
+		report(d);
+		newLine();
+	}
+	public void reportline(long l) {
+		newLine();
+		report(l);
+		newLine();
+	}
+
+
+	public void setTabSize(int value) {
+		_tabSize = value;
+		if (_tabSize < 0)
+			_tabSize = 0;
+	}
+
+	public void setBulleting(Bulleting value) {
+		if (value != null)
+			_bulleting = value;
 	}
 
 	// TODO
@@ -140,19 +260,20 @@ public abstract class Reporter {
 			_sectionCpt.pop();
 	}
 
+	protected void processToken(String t) {
+		if (t.equals(_newSection))
+			newSection();
+		else if (t.equals(_incSection))
+			incSection();
+		else if (t.equals(_decSection))
+			decSection();
+		else
+			System.out.println("Unrecognized token : "+t);
+			// TODO log
+	}
+
 	protected abstract void doReport(String s);
 	protected abstract void doFlush();
-
-	public void setTabSize(int value) {
-		_tabSize = value;
-		if (_tabSize < 0)
-			_tabSize = 0;
-	}
-
-	public void setBulleting(Bulleting value) {
-		if (value != null)
-			_bulleting = value;
-	}
 
 	// output parameters
 	private int _tabSize = 2;
