@@ -15,6 +15,24 @@ public abstract class Reporter {
 			report(o.toString());
 	}
 	public void report(String string) {
+		int cpt = 0;
+		int nbL = 0;
+		int length = string.length();
+		while ((cpt < length) && (string.charAt(cpt) == '\n'))
+			cpt++;
+		if (cpt > 0) {
+			for (int i = 0 ; i < cpt ; i++)
+				newLine();
+			string = string.substring(cpt,length);
+			length -= cpt;
+		}
+		cpt = length-1;
+		while ((cpt >= 0) && (string.charAt(cpt) == '\n'))
+			cpt--;
+		if (cpt < length-1) {
+			string = string.substring(0,cpt+1);
+		}
+
 		String lines[] = string.split(_endLine);
 		String first[];
 		String second[];
@@ -40,6 +58,12 @@ public abstract class Reporter {
 				}
 			}
 		}
+
+		if (cpt < length-1) {
+			for (int i = length-1 ; i > cpt ; i--)
+				newLine();
+		}
+
 	}
 	public void report(char array[]) {
 		report(new String(array));
