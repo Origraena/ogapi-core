@@ -36,8 +36,7 @@ public abstract class Reporter {
 					second = f.split(_endToken);
 					if (second.length != 2)
 						return;
-					processToken(second[0]);
-					doReport(second[1]);
+					processToken(second[0],second[1]);
 				}
 			}
 		}
@@ -204,20 +203,27 @@ public abstract class Reporter {
 		_sectionCpt.put(new Integer(0));
 		_tabLevel = 0;
 		_first = true;
+		_lineCpt = 0;
 		doReport(_endLine);
 	}
-	public void newLine() {
-		doReport(_endLine);
-		doFlush();
-		if (_inSection)
-			_tabLevel++;
+	protected void reportNewLine() {
+		_newLine = false;
 		String tab = "";
+		String margin = "";
+		if (_inSection)
+			for (int i = 0 ; i < _parMargin ; i++)
+				margin += " ";
 		for (int i = 0 ; i < _tabSize ; i++)
 			tab += " ";
 		for (int i = 0 ; i < _tabLevel ; i++)
 			doReport(tab);
-		if (_inSection)
-			_tabLevel--;
+		doReport(margin);
+	}
+	public void newLine() {
+		doReport(_endLine);
+		_lineCpt = 0;
+		_newLine = true;
+		doFlush();
 	}
 	public void newSection() {
 		newSection("");
@@ -226,24 +232,56 @@ public abstract class Reporter {
 		int old = _sectionCpt.pop().intValue();
 		_sectionCpt.put(new Integer(old+1));
 		_inSection = false;
-		if (_first)
-			_first = false;
-		else
+		if (!_newLine) 
 			newLine();
 		doReport(_bulleting.bullet(old+1,_tabLevel));
 		doReport(title);
 		_inSection = true;
+		if (title.length() > 0)
+			newLine();
+	}
+	public void newTitle(String title) {
+		final int length = title.length();
+		if (length == 0) {
+			title = "NO_TITLE";
+			newTitle(title);
+			return;
+		}
+		if (_first)
+			_first = false;
+		else
+			newLine();
+		StringBuilder line = new StringBuilder();
+		int i;
+		for (i = 0 ; i < _titleMargin ; i++)
+			line.append(' ');
+		line.append(_cross);
+		for (i = 0 ; i < length + 2 ; i++)
+			line.append(_horizontal);
+		doReport(line.toString());
 		newLine();
+		StringBuilder line2 = new StringBuilder();
+		for (i = 0 ; i < _titleMargin ; i++)
+			line2.append(' ');
+		line2.append(_vertical);
+		line2.append(' ');
+		line2.append(title);
+		line2.append(' ');
+		line2.append(_vertical);
+		doReport(line2.toString());
+		newLine();
+		doReport(line.toString());
+		_isTitle = false;
 	}
 
 	public void incSection() {
 		incSection(null);
 	}
 	public void incSection(String title) {
-		_tabLevel++;
-		_sectionCpt.put(new Integer(0));
 		if (title != null)
 			newSection(title);
+		_tabLevel++;
+		_sectionCpt.put(new Integer(0));
 		//else
 		//	newLine();
 	}
@@ -251,33 +289,55 @@ public abstract class Reporter {
 	public void decSection() {
 		_tabLevel--;
 		if (_tabLevel < 0) {
-			//System.out.println("tab level was "+_tabLevel);
 			_tabLevel = 0;
-			//System.out.println("(set to 0)");
 			// TODO log
 		}
 		else
 			_sectionCpt.pop();
 	}
 
-	protected void processToken(String t) {
+	protected void processToken(String t, String arg) {
 		if (t.equals(_newSection))
 			newSection();
 		else if (t.equals(_incSection))
 			incSection();
 		else if (t.equals(_decSection))
 			decSection();
+		else if (t.equals(_titleTok))
+			_isTitle = true;
 		else
 			System.out.println("Unrecognized token : "+t);
 			// TODO log
+		if (_isTitle) {
+			newTitle(arg);
+			_isTitle = false;
+		}
+		else
+			doReport(arg);
 	}
 
-	protected abstract void doReport(String s);
+	protected void doReport(String s) {
+		if (_newLine)
+			reportNewLine();
+		_lineCpt += doReportImpl(s);
+	}
+	abstract public void close();
+
+	/**
+	 * Must returns the number of char written.
+	 */
+	protected abstract int doReportImpl(String s);
 	protected abstract void doFlush();
 
 	// output parameters
-	private int _tabSize = 2;
+	private int _tabSize = 4;
+	private int _titleMargin = 8;
+	private int _parMargin = 2;
 	private Bulleting _bulleting = Bulleting.NULL;
+	private char _cross = '+';
+	private char _vertical = '|';
+	private char _horizontal = '-';
+
 
 	// tokens
 	private String _startToken = "__@";
@@ -286,11 +346,15 @@ public abstract class Reporter {
 	private String _incSection = "INC";
 	private String _decSection = "DEC";
 	private String _endLine = "\n";
+	private String _titleTok = "TITLE";
 
 	// internal
+	private boolean _isTitle = false;
 	private boolean _first = true;
-	private boolean _inSection = false;
+	private boolean _newLine = true;
+	private boolean _inSection = true;
 	private int _tabLevel = 0;
+	private int _lineCpt = 0;
 	private Lifo<Integer> _sectionCpt = new Lifo<Integer>();
 };
 

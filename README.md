@@ -5,3 +5,5 @@ OGAPI-core
 * lists  : fifo, lifo
 * report : reporter (formatted printer)
 
+
+Todo : clean

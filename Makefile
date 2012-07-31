@@ -60,7 +60,8 @@ all: debug release
 debug: $(TARGET_DEBUG)
 
 # release mode
-release: $(TARGET_RELEASE) doc
+release: $(TARGET_RELEASE) 
+#doc
 
 # test mode
 #test: debug build-test exec-test
