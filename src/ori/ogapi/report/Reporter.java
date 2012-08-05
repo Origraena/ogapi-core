@@ -7,7 +7,7 @@ public abstract class Reporter {
 	public Reporter() {
 		_sectionCpt.put(new Integer(0));
 	}
-	
+
 	public void report(Object o) {
 		if (o instanceof Reportable)
 			((Reportable)o).reportIn(this);
@@ -282,6 +282,7 @@ public abstract class Reporter {
 		line.append(_cross);
 		for (i = 0 ; i < length + 2 ; i++)
 			line.append(_horizontal);
+		line.append(_cross);
 		doReport(line.toString());
 		newLine();
 		StringBuilder line2 = new StringBuilder();
@@ -302,7 +303,7 @@ public abstract class Reporter {
 		incSection(null);
 	}
 	public void incSection(String title) {
-		if (title != null)
+		if ((title != null) && (title.length() > 0))
 			newSection(title);
 		_tabLevel++;
 		_sectionCpt.put(new Integer(0));
