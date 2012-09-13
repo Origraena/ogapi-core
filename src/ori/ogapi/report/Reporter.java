@@ -9,6 +9,8 @@ public abstract class Reporter {
 	}
 
 	public void report(Object o) {
+		if (o == null)
+			return;
 		if (o instanceof Reportable)
 			((Reportable)o).reportIn(this);
 		else
