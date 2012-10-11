@@ -32,6 +32,20 @@ public class FloatArray {
 		return _array[index];
 	}
 
+	public float removeAt(int index) throws NoSuchElementException {
+		if (index >= _size)
+			throw new NoSuchElementException();
+		float res = _array[index];
+		final int length = _size-1;
+		for (int j = index ; j < length ; j++)
+			_array[j] = _array[j+1];
+		return res;
+	}
+
+	public void removeAll() {
+		_size = 0;
+	}
+
 	public void add(float e) {
 		if (_capacity - _size <= 0)
 			this.recap();
@@ -53,11 +67,19 @@ public class FloatArray {
 		_size = newSize;
 	}
 
+	public void trimToSize() {
+		this.recap(_size);
+	}
+
 	protected void recap() {
 		this.recap(_capacity + _foot);
 	}
 
 	protected void recap(int capacity) {
+		if (capacity == 0) {
+			_capacity = 0;
+			_array = null;
+		}
 		float copy[] = _array;
 		_array = new float[capacity];
 		for (int i = 0 ; i < capacity ; i++) {

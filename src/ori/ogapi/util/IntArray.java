@@ -45,6 +45,20 @@ public class IntArray {
 		_array[index] = value;
 	}
 
+	public int removeAt(int index) throws NoSuchElementException {
+		if (index >= _size)
+			throw new NoSuchElementException();
+		int res = _array[index];
+		final int length = _size-1;
+		for (int j = index ; j < length ; j++)
+			_array[j] = _array[j+1];
+		return res;
+	}
+
+	public void removeAll() {
+		_size = 0;
+	}
+
 	public void resize(int newSize) {
 		if (newSize < 0)
 			newSize = 0;
@@ -53,11 +67,19 @@ public class IntArray {
 		_size = newSize;
 	}
 
+	public void trimToSize() {
+		this.recap(_size);
+	}
+
 	protected void recap() {
 		this.recap(_capacity + _foot);
 	}
 
 	protected void recap(int capacity) {
+		if (capacity == 0) {
+			_capacity = 0;
+			_array = null;
+		}
 		int copy[] = _array;
 		_array = new int[capacity];
 		for (int i = 0 ; i < capacity ; i++) {
