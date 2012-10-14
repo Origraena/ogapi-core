@@ -93,6 +93,10 @@ public class IntArray {
 			_size = _capacity;
 	}
 
+	public int size() {
+		return _size;
+	}
+
 
 	private int _capacity;
 	private int _size;
