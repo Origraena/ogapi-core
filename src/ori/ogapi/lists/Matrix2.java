@@ -1,6 +1,5 @@
 package ori.ogapi.lists;
 
-import java.lang.Iterable;
 import java.util.NoSuchElementException;
 
 /**
@@ -96,7 +95,7 @@ public class Matrix2<E> implements Iterable<E> {
 			return get(_current-1);
 		}
 		public void remove() throws NoSuchElementException {
-			//remove(_current);		// TODO pointer on encapsulating class
+			Matrix2.this.remove(_current);
 		}
 		private int _current = 0;
 	};
