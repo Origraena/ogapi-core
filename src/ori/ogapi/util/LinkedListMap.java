@@ -22,7 +22,7 @@ public class LinkedListMap<K,V> implements Map<K,V> {
 	@Override
 	public boolean containsKey(Object k) {
 		for (Entry<K,V> p : _list) {
-			if (p.getKey() == k)
+			if (p.getKey().equals(k))
 				return true;
 		}
 		return false;
@@ -51,7 +51,7 @@ public class LinkedListMap<K,V> implements Map<K,V> {
 	@Override
 	public V get(Object k) {
 		for (Entry<K,V> p : _list) {
-			if (p.getKey() == k)
+			if (p.getKey().equals(k))
 				return p.getValue();
 		}
 		return null;
@@ -65,6 +65,10 @@ public class LinkedListMap<K,V> implements Map<K,V> {
 	// TODO
 	@Override
 	public Set<K> keySet() {
+////	LinkedList<K> res = new LinkedList<K>();
+////	for (Entry<K,V> e : _list)
+////		res.add(e.getKey());
+////	return res;
 		return null;
 	}
 
@@ -91,7 +95,7 @@ public class LinkedListMap<K,V> implements Map<K,V> {
 	@Override
 	public V remove(Object key) {
 		for (Entry<K,V> p : _list) {
-			if (p.getKey() == key) {
+			if (p.getKey().equals(key)) {
 				V old = p.getValue();
 				_list.remove(p);
 				return old;
@@ -103,7 +107,10 @@ public class LinkedListMap<K,V> implements Map<K,V> {
 	// TODO
 	@Override
 	public Collection<V> values() {
-		return null;
+		LinkedList<V> res = new LinkedList<V>();
+		for (Entry<K,V> e : _list)
+			res.add(e.getValue());
+		return res;
 	}
 
 	private LinkedList<Entry<K,V>> _list = new LinkedList<Entry<K,V>>();
